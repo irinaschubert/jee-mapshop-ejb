@@ -6,10 +6,13 @@ import javax.ejb.Local;
 
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
+import de.java2enterprise.onlineshop.model.Status;
 
 @Local
 public interface SellBeanLocal extends Serializable {
     String persist(Item item);
     
-    Customer find(Long id);
+    Customer findCustomer(Long id);
+    
+    Status findStatus(Long id);
 }

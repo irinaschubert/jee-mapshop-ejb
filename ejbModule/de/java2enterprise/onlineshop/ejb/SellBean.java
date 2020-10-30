@@ -6,6 +6,7 @@ import javax.persistence.PersistenceContext;
 
 import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
+import de.java2enterprise.onlineshop.model.Status;
 
 @Stateless
 public class SellBean implements SellBeanLocal {
@@ -22,9 +23,15 @@ public class SellBean implements SellBeanLocal {
     }
     
     @Override
-    public Customer find(Long id) {
+    public Customer findCustomer(Long id) {
     	Customer customer = em.find(Customer.class, id);
     	return customer;
+    }
+    
+    @Override
+    public Status findStatus(Long id) {
+    	Status status = em.find(Status.class, id);
+    	return status;
     }
 }
 
