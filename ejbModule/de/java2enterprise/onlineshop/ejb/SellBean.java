@@ -18,7 +18,6 @@ public class SellBean implements SellBeanLocal {
     @Override
     public String persist(Item item) {
         em.persist(item);
-        System.out.println("item persisted");
         return "item persisted";
     }
     
@@ -26,6 +25,12 @@ public class SellBean implements SellBeanLocal {
     public Customer findCustomer(Long id) {
     	Customer customer = em.find(Customer.class, id);
     	return customer;
+    }
+    
+    @Override
+    public Item findItem(Long id) {
+    	Item item = em.find(Item.class, id);
+    	return item;
     }
     
     @Override

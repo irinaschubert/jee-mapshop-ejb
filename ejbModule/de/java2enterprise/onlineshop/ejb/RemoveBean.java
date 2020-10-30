@@ -21,5 +21,16 @@ public class RemoveBean implements RemoveBeanLocal {
         em.remove(item);
         return "item deleted";
     }
+    
+    @Override
+    public String deactivateItem(Item item) {
+    	try {
+        	
+            em.merge(item);
+    	}catch(Exception e) {
+    		System.out.println(e.getMessage());
+    	}
+        return "item deactivated";
+    }
 }
 

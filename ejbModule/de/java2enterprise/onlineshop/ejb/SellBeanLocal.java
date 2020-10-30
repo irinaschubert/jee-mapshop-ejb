@@ -14,5 +14,7 @@ public interface SellBeanLocal extends Serializable {
     
     Customer findCustomer(Long id);
     
+    Item findItem(Long id);
+    
     Status findStatus(Long id);
 }
