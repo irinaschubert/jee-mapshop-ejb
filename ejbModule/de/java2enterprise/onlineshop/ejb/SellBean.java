@@ -12,6 +12,7 @@ import de.java2enterprise.onlineshop.model.Status;
 public class SellBean implements SellBeanLocal {
 
 	private static final long serialVersionUID = 1L;
+	
 	@PersistenceContext
     private EntityManager em;
 

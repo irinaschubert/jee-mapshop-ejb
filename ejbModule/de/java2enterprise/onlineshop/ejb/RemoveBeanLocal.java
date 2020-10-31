@@ -11,4 +11,6 @@ public interface RemoveBeanLocal extends Serializable {
     String removeItem(Item item);
     
     String deactivateItem(Item item);
+    
+    String removeItemFromCart(Item item);
 }

@@ -8,8 +8,8 @@ import de.java2enterprise.onlineshop.model.Item;
 
 @Stateless
 public class RemoveBean implements RemoveBeanLocal {
-
 	private static final long serialVersionUID = 1L;
+	
 	@PersistenceContext
     private EntityManager em;
 
@@ -25,12 +25,21 @@ public class RemoveBean implements RemoveBeanLocal {
     @Override
     public String deactivateItem(Item item) {
     	try {
-        	
             em.merge(item);
     	}catch(Exception e) {
     		System.out.println(e.getMessage());
     	}
         return "item deactivated";
+    }
+    
+    @Override
+    public String removeItemFromCart(Item item) {
+    	try {
+            em.merge(item);
+    	}catch(Exception e) {
+    		System.out.println(e.getMessage());
+    	}
+        return "item removed from cart";
     }
 }
 
