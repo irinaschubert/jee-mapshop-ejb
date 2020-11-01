@@ -18,5 +18,15 @@ public class RegisterBean implements RegisterBeanLocal {
         em.persist(customer);
         return "customer persisted";
     }
+    
+    @Override
+    public String removeCustomer(Customer customer) {
+    	System.out.println("customer to remove: " + customer.getEmail());
+    	if (!em.contains(customer)) {
+    		customer = em.merge(customer);
+    	}
+        em.remove(customer);
+        return "customer removed";
+    }
 }
 
