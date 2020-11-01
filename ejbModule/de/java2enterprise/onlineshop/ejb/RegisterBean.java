@@ -16,7 +16,7 @@ public class RegisterBean implements RegisterBeanLocal {
     @Override
     public String persist(Customer customer) {
         em.persist(customer);
-        return "customer persisted";
+        return "customerPersisted";
     }
     
     @Override
@@ -26,7 +26,7 @@ public class RegisterBean implements RegisterBeanLocal {
     		customer = em.merge(customer);
     	}
         em.remove(customer);
-        return "customer removed";
+        return "customerRemoved";
     }
 }
 
