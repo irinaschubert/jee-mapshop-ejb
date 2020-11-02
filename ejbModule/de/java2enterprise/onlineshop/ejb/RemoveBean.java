@@ -13,14 +13,14 @@ public class RemoveBean implements RemoveBeanLocal {
 	@PersistenceContext
     private EntityManager em;
 
-    @Override
+    /*@Override
     public String removeItem(Item item) {
     	if (!em.contains(item)) {
     		item = em.merge(item);
     	}
         em.remove(item);
         return "item deleted";
-    }
+    }*/
     
     @Override
     public String deactivateItem(Item item) {
