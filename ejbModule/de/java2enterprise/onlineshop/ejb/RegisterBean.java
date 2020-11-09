@@ -12,18 +12,18 @@ import de.java2enterprise.onlineshop.model.Customer;
 public class RegisterBean implements RegisterBeanLocal {
 
 	private static final long serialVersionUID = 1L;
+	
 	@PersistenceContext
     private EntityManager em;
 
     @Override
-    public String persist(Customer customer) {
+    public String persistCustomer(Customer customer) {
         em.persist(customer);
         return "customerPersisted";
     }
     
     @Override
     public String removeCustomer(Customer customer) {
-    	System.out.println("Customer to remove: " + customer.getEmail());
     	if (!em.contains(customer)) {
     		customer = em.merge(customer);
     	}
@@ -31,11 +31,10 @@ public class RegisterBean implements RegisterBeanLocal {
         
         FacesMessage m = new FacesMessage(
             "Succesfully deleted account!",
-            "User account was successfully deleted including the active items belonging to it.");
+            "User account was successfully deleted.");
         FacesContext
             .getCurrentInstance()
             .addMessage("welcomeForm", m);
-        
         return "customerRemoved";
     }
 }

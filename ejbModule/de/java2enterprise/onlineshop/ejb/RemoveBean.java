@@ -8,6 +8,7 @@ import de.java2enterprise.onlineshop.model.Item;
 
 @Stateless
 public class RemoveBean implements RemoveBeanLocal {
+	
 	private static final long serialVersionUID = 1L;
 	
 	@PersistenceContext
