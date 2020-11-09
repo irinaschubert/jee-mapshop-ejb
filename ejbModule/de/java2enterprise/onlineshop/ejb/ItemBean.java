@@ -1,10 +1,18 @@
 package de.java2enterprise.onlineshop.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
+import de.java2enterprise.onlineshop.model.Customer;
 import de.java2enterprise.onlineshop.model.Item;
+import de.java2enterprise.onlineshop.model.Status;
 
 @Stateless
 public class ItemBean implements ItemBeanLocal {
@@ -19,16 +27,9 @@ public class ItemBean implements ItemBeanLocal {
         em.persist(item);
         return "item persisted";
     }
-    
-    @Override
-    public Item findItem(Long id) {
-    	Item item = em.find(Item.class, id);
-    	return item;
-    }
 	
-    @Override
+	@Override
     public String removeItem(Item item) {
-    	System.out.println("item to remove: " + item.getTitle());
     	try {
     		if (!em.contains(item)) {
     			item = em.merge(item);
@@ -42,7 +43,6 @@ public class ItemBean implements ItemBeanLocal {
     
     @Override
     public String editItem(Item item) {
-    	System.out.println("item to edit: " + item.getTitle());
     	try {
             em.merge(item);
     	}catch(Exception e) {
@@ -51,6 +51,96 @@ public class ItemBean implements ItemBeanLocal {
         return "item edited";
     }
     
+    @Override
+    public Item findItem(Long id) {
+    	Item item = em.find(Item.class, id);
+    	return item;
+    }
     
+    @Override
+    public List<Item> findAll() {
+        try {
+            TypedQuery<Item> query = em.createNamedQuery(
+                            "Item.findAll",
+                            Item.class);
+            return query.getResultList();
+        } catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                FacesMessage.SEVERITY_WARN,
+                e.getMessage(),
+                e.getCause().getMessage());
+            FacesContext
+                .getCurrentInstance()
+                .addMessage(null, m);
+        }
+        return new ArrayList<Item>();
+    }
+    
+    @Override
+    public List<Item> findItemsByQuery(Status status, String queryTerm){
+    	TypedQuery<Item> query = em.createQuery(
+        		"FROM " + Item.class.getSimpleName() + " i "
+                        + "WHERE i.status = :status "
+                		+ "AND i.title LIKE :term "
+                        + "OR i.description LIKE :term",
+                Item.class);
+        query.setParameter("status", status);
+        query.setParameter("term", "%"+queryTerm+"%");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Item> findItemsByStatus(Status status){
+    	TypedQuery<Item> query = em.createQuery(
+        		"FROM " + Item.class.getSimpleName() + " i "
+                        + "WHERE i.status = :status",
+                Item.class);
+        query.setParameter("status", status);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Item> findItemsByStatusAndBuyer(Status status, Customer buyer){
+    	TypedQuery<Item> query = em.createQuery(
+                "FROM " + Item.class.getSimpleName() + " i "
+                        + "WHERE i.status= :status "
+                        + "AND i.buyer= :buyer",
+                Item.class);
+        query.setParameter("status", status);
+        query.setParameter("buyer", buyer);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Item> findItemsByStatusAndSeller(Status status, Customer seller){
+    	TypedQuery<Item> query = em.createQuery(
+                "FROM " + Item.class.getSimpleName() + " i "
+                        + "WHERE i.seller = :seller "
+                		+ "AND i.status = :status",
+                Item.class);
+        query.setParameter("seller", seller);
+        query.setParameter("status", status);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Customer seller){
+    	List<Item> offeredItems = new ArrayList<Item>();
+    	try {
+            TypedQuery<Item> query = em.createQuery(
+                    "FROM " + Item.class.getSimpleName() + " i "
+                            + "WHERE i.seller = :seller "
+                    		+ "AND (i.status = :status1 "
+                            + "OR i.status = :status2)",
+                    Item.class);
+            query.setParameter("seller", seller);
+            query.setParameter("status1", status1);
+            query.setParameter("status2", status2);
+            offeredItems = query.getResultList();
+    	}catch(Exception e) {
+    		System.out.println(e.getCause());
+    	}
+    	return offeredItems;    	
+    }
 }
 
