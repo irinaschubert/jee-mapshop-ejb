@@ -7,7 +7,9 @@ import javax.ejb.Local;
 import de.java2enterprise.onlineshop.model.Customer;
 
 @Local
-public interface RegisterBeanLocal extends Serializable {
+public interface CustomerBeanLocal extends Serializable {
+	
+	Customer findCustomer(Long id);
     
 	String persistCustomer(Customer customer);
     

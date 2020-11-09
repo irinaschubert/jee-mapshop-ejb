@@ -9,13 +9,19 @@ import javax.persistence.PersistenceContext;
 import de.java2enterprise.onlineshop.model.Customer;
 
 @Stateless
-public class RegisterBean implements RegisterBeanLocal {
+public class CustomerBean implements CustomerBeanLocal {
 
 	private static final long serialVersionUID = 1L;
 	
 	@PersistenceContext
     private EntityManager em;
 
+	@Override
+    public Customer findCustomer(Long id) {
+    	Customer customer = em.find(Customer.class, id);
+    	return customer;
+    }
+	
     @Override
     public String persistCustomer(Customer customer) {
         em.persist(customer);
