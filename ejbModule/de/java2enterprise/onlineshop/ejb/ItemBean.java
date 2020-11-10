@@ -78,54 +78,97 @@ public class ItemBean implements ItemBeanLocal {
     
     @Override
     public List<Item> findItemsByQuery(Status status, String queryTerm){
-    	TypedQuery<Item> query = em.createQuery(
-        		"FROM " + Item.class.getSimpleName() + " i "
-                        + "WHERE i.status = :status "
-                		+ "AND i.title LIKE :term "
-                        + "OR i.description LIKE :term",
-                Item.class);
-        query.setParameter("status", status);
-        query.setParameter("term", "%"+queryTerm+"%");
-        return query.getResultList();
+    	try {
+	    	TypedQuery<Item> query = em.createQuery(
+	        		"FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.status = :status "
+	                		+ "AND (i.title LIKE :term "
+	                        + "OR i.description LIKE :term)",
+	                Item.class);
+	        query.setParameter("status", status);
+	        query.setParameter("term", "%"+queryTerm+"%");
+	        return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+        }
+        return new ArrayList<Item>();
     }
     
     @Override
     public List<Item> findItemsByStatus(Status status){
-    	TypedQuery<Item> query = em.createQuery(
-        		"FROM " + Item.class.getSimpleName() + " i "
-                        + "WHERE i.status = :status",
-                Item.class);
-        query.setParameter("status", status);
-        return query.getResultList();
+    	try {
+	    	TypedQuery<Item> query = em.createQuery(
+	        		"FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.status = :status",
+	                Item.class);
+	        query.setParameter("status", status);
+	        return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+        }
+        return new ArrayList<Item>();
     }
     
     @Override
     public List<Item> findItemsByStatusAndBuyer(Status status, Customer buyer){
-    	TypedQuery<Item> query = em.createQuery(
-                "FROM " + Item.class.getSimpleName() + " i "
-                        + "WHERE i.status= :status "
-                        + "AND i.buyer= :buyer",
-                Item.class);
-        query.setParameter("status", status);
-        query.setParameter("buyer", buyer);
-        return query.getResultList();
+    	try {
+	    	TypedQuery<Item> query = em.createQuery(
+	                "FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.status= :status "
+	                        + "AND i.buyer= :buyer",
+	                Item.class);
+	        query.setParameter("status", status);
+	        query.setParameter("buyer", buyer);
+	        return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+        }
+        return new ArrayList<Item>();
     }
     
     @Override
     public List<Item> findItemsByStatusAndSeller(Status status, Customer seller){
-    	TypedQuery<Item> query = em.createQuery(
-                "FROM " + Item.class.getSimpleName() + " i "
-                        + "WHERE i.seller = :seller "
-                		+ "AND i.status = :status",
-                Item.class);
-        query.setParameter("seller", seller);
-        query.setParameter("status", status);
-        return query.getResultList();
+    	try {
+	    	TypedQuery<Item> query = em.createQuery(
+	                "FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.seller = :seller "
+	                		+ "AND i.status = :status",
+	                Item.class);
+	        query.setParameter("seller", seller);
+	        query.setParameter("status", status);
+	        return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+        }
+        return new ArrayList<Item>();
     }
     
     @Override
     public List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Customer seller){
-    	List<Item> offeredItems = new ArrayList<Item>();
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
@@ -136,11 +179,17 @@ public class ItemBean implements ItemBeanLocal {
             query.setParameter("seller", seller);
             query.setParameter("status1", status1);
             query.setParameter("status2", status2);
-            offeredItems = query.getResultList();
-    	}catch(Exception e) {
-    		System.out.println(e.getCause());
-    	}
-    	return offeredItems;    	
+            return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+        }
+        return new ArrayList<Item>();    	
     }
 }
 
