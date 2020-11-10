@@ -30,5 +30,7 @@ public interface ItemBeanLocal extends Serializable {
     
     List<Item> findItemsByStatusAndSeller(Status status, Customer seller);
     
-    List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Customer seller);
+    List<Item> findItemsByTwoStatusesAndSeller(Status status1, Status status2, Customer seller);
+    
+    List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Status status3, Customer seller);
 }

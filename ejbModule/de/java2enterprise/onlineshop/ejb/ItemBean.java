@@ -168,7 +168,7 @@ public class ItemBean implements ItemBeanLocal {
     }
     
     @Override
-    public List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Customer seller){
+    public List<Item> findItemsByTwoStatusesAndSeller(Status status1, Status status2, Customer seller){
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
@@ -179,6 +179,33 @@ public class ItemBean implements ItemBeanLocal {
             query.setParameter("seller", seller);
             query.setParameter("status1", status1);
             query.setParameter("status2", status2);
+            return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
+        }
+        return new ArrayList<Item>();    	
+    }
+    
+    @Override
+    public List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Status status3, Customer seller){
+    	try {
+            TypedQuery<Item> query = em.createQuery(
+                    "FROM " + Item.class.getSimpleName() + " i "
+                            + "WHERE i.seller = :seller "
+                    		+ "AND (i.status = :status1 "
+                            + "OR i.status = :status2 "
+                    		+ "OR i.status = :status3)",
+                    Item.class);
+            query.setParameter("seller", seller);
+            query.setParameter("status1", status1);
+            query.setParameter("status2", status2);
+            query.setParameter("status3", status3);
             return query.getResultList();
     	}catch (Exception e) {
         	FacesMessage m = new FacesMessage(
