@@ -12,7 +12,7 @@ import de.java2enterprise.onlineshop.model.Status;
 @Local
 public interface ItemBeanLocal extends Serializable {
     
-    String persistItem(Item item);
+    Long persistItem(Item item);
     
     String removeItem(Item item);
     
@@ -21,6 +21,8 @@ public interface ItemBeanLocal extends Serializable {
     Item findItem(Long id);
     
     List<Item> findAll();
+    
+    List<Item> findChildItems(Long productId);
     
     List<Item> findItemsByQuery(Status status, String queryTerm);
     
@@ -32,5 +34,5 @@ public interface ItemBeanLocal extends Serializable {
     
     List<Item> findItemsByTwoStatusesAndSeller(Status status1, Status status2, Customer seller);
     
-    List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Status status3, Customer seller);
+    List<Item> findItemsByThreeStatusesAndSeller(Status status1, Status status2, Status status3, Customer seller);
 }

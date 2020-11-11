@@ -23,9 +23,10 @@ public class ItemBean implements ItemBeanLocal {
     private EntityManager em;
     
 	@Override
-    public String persistItem(Item item) {
+    public Long persistItem(Item item) {
         em.persist(item);
-        return "item persisted";
+        em.flush();
+        return item.getId();
     }
 	
 	@Override
@@ -72,6 +73,27 @@ public class ItemBean implements ItemBeanLocal {
             FacesContext
                 .getCurrentInstance()
                 .addMessage(null, m);
+        }
+        return new ArrayList<Item>();
+    }
+    
+    @Override
+    public List<Item> findChildItems(Long productId){
+    	try {
+	    	TypedQuery<Item> query = em.createQuery(
+	        		"FROM " + Item.class.getSimpleName() + " i "
+	                        + "WHERE i.product_id = :productId",
+	                Item.class);
+	        query.setParameter("productId", productId);
+	        return query.getResultList();
+    	}catch (Exception e) {
+        	FacesMessage m = new FacesMessage(
+                    FacesMessage.SEVERITY_WARN,
+                    e.getMessage(),
+                    e.getCause().getMessage());
+                FacesContext
+                    .getCurrentInstance()
+                    .addMessage(null, m);
         }
         return new ArrayList<Item>();
     }
@@ -193,7 +215,7 @@ public class ItemBean implements ItemBeanLocal {
     }
     
     @Override
-    public List<Item> findItemsByStatusesAndSeller(Status status1, Status status2, Status status3, Customer seller){
+    public List<Item> findItemsByThreeStatusesAndSeller(Status status1, Status status2, Status status3, Customer seller){
     	try {
             TypedQuery<Item> query = em.createQuery(
                     "FROM " + Item.class.getSimpleName() + " i "
