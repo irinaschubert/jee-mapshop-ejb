@@ -2,6 +2,7 @@ package de.java2enterprise.onlineshop.ejb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,14 +17,20 @@ import de.java2enterprise.onlineshop.model.Status;
 public class ItemBean implements ItemBeanLocal {
 	
 	private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(ItemBean.class.toString());
 	
 	@PersistenceContext
     private EntityManager em;
     
 	@Override
     public Long persistItem(Item item) {
-        em.persist(item);
-        em.flush();
+		try {
+			em.persist(item);
+			em.flush();
+		}catch(Exception e) {
+			log.severe(e.getMessage());
+		}
         return item.getId();
     }
 	
@@ -35,9 +42,9 @@ public class ItemBean implements ItemBeanLocal {
     		}
     		em.remove(item);
     	}catch(Exception e) {
-    		
+    		log.severe(e.getMessage());
     	}
-        return "item removed";
+        return "itemRemoved";
     }
     
     @Override
@@ -45,15 +52,20 @@ public class ItemBean implements ItemBeanLocal {
     	try {
             em.merge(item);
     	}catch(Exception e) {
-    		
+    		log.severe(e.getMessage());
     	}
-        return "item edited";
+        return "itemEdited";
     }
     
     @Override
     public Item findItem(Long id) {
-    	Item item = em.find(Item.class, id);
-    	return item;
+    	try {
+    		Item item = em.find(Item.class, id);
+    		return item;
+    	}catch(Exception e) {
+    		log.severe(e.getMessage());
+    	}
+    	return null;
     }
     
     @Override
@@ -64,7 +76,7 @@ public class ItemBean implements ItemBeanLocal {
                             Item.class);
             return query.getResultList();
         } catch (Exception e) {
-        	
+        	log.severe(e.getMessage());
         }
         return new ArrayList<Item>();
     }
@@ -79,7 +91,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("productId", productId);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();
     }
@@ -97,7 +109,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("term", "%"+queryTerm+"%");
 	        return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();
     }
@@ -112,7 +124,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("status", status);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();
     }
@@ -129,7 +141,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("buyer", buyer);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();
     }
@@ -146,7 +158,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("status", status);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();
     }
@@ -165,7 +177,7 @@ public class ItemBean implements ItemBeanLocal {
             query.setParameter("status2", status2);
             return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();    	
     }
@@ -186,7 +198,7 @@ public class ItemBean implements ItemBeanLocal {
             query.setParameter("status3", status3);
             return query.getResultList();
     	}catch (Exception e) {
-        	
+    		log.severe(e.getMessage());
         }
         return new ArrayList<Item>();    	
     }

@@ -1,6 +1,8 @@
 package de.java2enterprise.onlineshop.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,22 +15,33 @@ import de.java2enterprise.onlineshop.model.Customer;
 public class CustomerBean implements CustomerBeanLocal {
 
 	private static final long serialVersionUID = 1L;
+    
+    private final static Logger log = Logger.getLogger(CustomerBean.class.toString());
 	
 	@PersistenceContext
     private EntityManager em;
 	
     @Override
     public String persistCustomer(Customer customer) {
-        em.persist(customer);
+    	try {
+    		em.persist(customer);
+    	}catch(Exception e) {
+    		log.severe(e.getMessage());
+    	}
         return "customerPersisted";
     }
     
     @Override
     public String removeCustomer(Customer customer) {
-    	if (!em.contains(customer)) {
-    		customer = em.merge(customer);
+    	try {
+    		if (!em.contains(customer)) {
+    			customer = em.merge(customer);
+	    	}
+	        em.remove(customer);
+    	}catch(Exception e) {
+    		log.severe(e.getMessage());
     	}
-        em.remove(customer);
+    	
         return "customerRemoved";
     }
     
@@ -37,20 +50,26 @@ public class CustomerBean implements CustomerBeanLocal {
     	try {
             em.merge(customer);
     	}catch(Exception e) {
-    		System.out.println(e.getMessage());
+    		log.severe(e.getMessage());
     	}
         return "customerEdited";
     }
 
 	@Override
     public Customer findCustomer(Long id) {
-    	Customer customer = em.find(Customer.class, id);
-    	return customer;
+		try {
+			Customer customer = em.find(Customer.class, id);
+			return customer;
+		}catch(Exception e) {
+			log.severe(e.getMessage());
+		}
+    	return null;    	
     }
 	
 	@Override
     public List<Customer> findCustomerByCredentials(String email, String password) {
-		TypedQuery<Customer> query = em.createQuery(
+		try{
+			TypedQuery<Customer> query = em.createQuery(
         		"FROM " + Customer.class.getSimpleName() + " c "
                         + "WHERE c.email= :email "
                         + "AND c.password= :password",
@@ -58,6 +77,10 @@ public class CustomerBean implements CustomerBeanLocal {
         query.setParameter("email", email);
         query.setParameter("password", password);
         return query.getResultList();
+		}catch(Exception e) {
+			log.severe(e.getMessage());
+		}
+		return new ArrayList<Customer>();
     }
 }
 
