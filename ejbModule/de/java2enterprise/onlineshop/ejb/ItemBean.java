@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -37,7 +35,7 @@ public class ItemBean implements ItemBeanLocal {
     		}
     		em.remove(item);
     	}catch(Exception e) {
-    		System.out.println(e.getMessage());
+    		
     	}
         return "item removed";
     }
@@ -47,7 +45,7 @@ public class ItemBean implements ItemBeanLocal {
     	try {
             em.merge(item);
     	}catch(Exception e) {
-    		System.out.println(e.getMessage());
+    		
     	}
         return "item edited";
     }
@@ -66,13 +64,7 @@ public class ItemBean implements ItemBeanLocal {
                             Item.class);
             return query.getResultList();
         } catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                FacesMessage.SEVERITY_WARN,
-                e.getMessage(),
-                e.getCause().getMessage());
-            FacesContext
-                .getCurrentInstance()
-                .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();
     }
@@ -87,13 +79,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("productId", productId);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();
     }
@@ -111,13 +97,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("term", "%"+queryTerm+"%");
 	        return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();
     }
@@ -132,13 +112,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("status", status);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();
     }
@@ -155,13 +129,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("buyer", buyer);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();
     }
@@ -178,13 +146,7 @@ public class ItemBean implements ItemBeanLocal {
 	        query.setParameter("status", status);
 	        return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();
     }
@@ -203,13 +165,7 @@ public class ItemBean implements ItemBeanLocal {
             query.setParameter("status2", status2);
             return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();    	
     }
@@ -230,13 +186,7 @@ public class ItemBean implements ItemBeanLocal {
             query.setParameter("status3", status3);
             return query.getResultList();
     	}catch (Exception e) {
-        	FacesMessage m = new FacesMessage(
-                    FacesMessage.SEVERITY_WARN,
-                    e.getMessage(),
-                    e.getCause().getMessage());
-                FacesContext
-                    .getCurrentInstance()
-                    .addMessage(null, m);
+        	
         }
         return new ArrayList<Item>();    	
     }

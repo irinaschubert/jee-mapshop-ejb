@@ -3,8 +3,6 @@ package de.java2enterprise.onlineshop.ejb;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -31,13 +29,6 @@ public class CustomerBean implements CustomerBeanLocal {
     		customer = em.merge(customer);
     	}
         em.remove(customer);
-        
-        FacesMessage m = new FacesMessage(
-            "Succesfully deleted account!",
-            "User account was successfully deleted.");
-        FacesContext
-            .getCurrentInstance()
-            .addMessage("welcomeForm", m);
         return "customerRemoved";
     }
     
@@ -48,7 +39,7 @@ public class CustomerBean implements CustomerBeanLocal {
     	}catch(Exception e) {
     		System.out.println(e.getMessage());
     	}
-        return "customer edited";
+        return "customerEdited";
     }
 
 	@Override
